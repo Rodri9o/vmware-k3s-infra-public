@@ -10,7 +10,7 @@ variables:
 #   script:
 #     - terraform init -backend-config="token=${TFC_TOKEN}"
 #     - terraform apply -var="vsphere_vcenter=${vsphere_vcenter}" -var="vsphere_user=${vsphere_user}" -var="vsphere_password=${vsphere_password}" -var="ssh_username=${ssh_username}" -var="ssh_password=${ssh_password}" --auto-approve -destroy
-#   tags: [windows, shell, vm]
+#   tags: [inK8s]
 
 terraform-build-k3s:
   stage: build
@@ -35,7 +35,7 @@ terraform-build-k3s:
   artifacts:
     reports:
       dotenv: build.env
-  tags: [windows, shell, vm]
+  tags: [inK8s]
 
 deploy-k3s:
   stage: deploy
@@ -52,4 +52,4 @@ deploy-k3s:
   needs:
     - job: terraform-build-k3s
       artifacts: true
-  tags: [windows, shell, vm]
+  tags: [inK8s]
