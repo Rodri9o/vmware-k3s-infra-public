@@ -18,6 +18,7 @@ terraform-build-k3s:
     - whoami
     - export USER=$(whoami)
     - echo ${USER}
+    - mkdir -p /home/${USER}/.terraform.d
     - |-
       cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
       {
