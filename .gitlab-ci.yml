@@ -15,6 +15,7 @@ variables:
 terraform-build-k3s:
   stage: build
   script:
+    - whoami
     - export user=$(whoami)
     - echo ${USER}
     - |-
