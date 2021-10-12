@@ -1,3 +1,3 @@
-# vmware-k3s-infra-public
+# Overview
 
 Deploy master and worker nodes for k3s
