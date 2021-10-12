@@ -3,7 +3,7 @@
 # =================== #
 terraform {
   backend "remote" {
-    organization = "TeKanAid"
+    organization = "HashiCorp-Sam"
     token        = "${TFC_TOKEN}"
 
     workspaces {
