@@ -15,6 +15,7 @@ variables:
 terraform-build-k3s:
   stage: build
   script:
+    - export user=$(whoami)
     - echo ${USER}
     - |-
       cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
