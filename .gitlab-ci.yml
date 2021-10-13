@@ -52,7 +52,7 @@ deploy-k3s:
     - sleep 20
     - kubectl get nodes
     - echo ${MASTER_NODE_NAME}
-    - kubectl taint nodes ${MASTER_NODE_NAME} key=value:NoSchedule
+    - kubectl taint nodes ${MASTER_NODE_NAME} key=value:NoSchedule || true
     - ls -lah /home/${USER}/.kube/config
     - cat /home/${USER}/.kube/config
   needs:
