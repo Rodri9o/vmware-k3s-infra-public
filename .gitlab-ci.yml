@@ -17,6 +17,7 @@ terraform-build-k3s:
   stage: build
   script:
     - export USER=$(whoami)
+    - echo USER=${USER} > build.env
     - mkdir -p /home/${USER}/.terraform.d
     - |-
       cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
@@ -34,7 +35,7 @@ terraform-build-k3s:
     # - terraform plan -lock=false -var="vsphere_vcenter=${vsphere_vcenter}" -var="vsphere_user=${vsphere_user}" -var="vsphere_password=${vsphere_password}" -var="ssh_username=${ssh_username}" -var="ssh_password=${ssh_password}"
     - terraform apply --auto-approve
     - terraform output -json
-    - terraform output -json >> build.env
+    - cat build.env
   artifacts:
     reports:
       dotenv: build.env
