@@ -1,7 +1,7 @@
 variables: 
   USER_K3S: ubuntu
   K3S_VERSION: v1.21.4+k3s1
-  K3S_CONTEXT: k3s-vmware
+  K3S_CONTEXT: k3s-vmware-test
   MASTER_NODE_NAME: master-test-1
   MASTER_1: 192.168.1.93
   WORKER_1: 192.168.1.94
@@ -53,12 +53,15 @@ deploy-k3s:
     - kubectl get nodes
     - echo ${MASTER_NODE_NAME}
     - kubectl taint nodes ${MASTER_NODE_NAME} key=value:NoSchedule || true
-    - ls -lah /home/${USER}/.kube/config
+    - ls -lah /home/${USER}/.kube
+    - mkdir -p 
+    - cp /home/${USER}/.kube/config
     - cat /home/${USER}/.kube/config
   needs:
     - job: terraform-build-k3s
   artifacts:
+      public: false
       paths:
-        - /home/${USER}/.kube/config
+        - /home/${USER}/.kube/config*
       expire_in: 1 hour
   tags: [inK8s]
