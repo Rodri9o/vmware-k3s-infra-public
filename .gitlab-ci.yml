@@ -9,6 +9,19 @@ variables:
 destroy-k3s:
   stage: deploy
   script:
+    - export USER=$(whoami)
+    - echo USER=${USER} > build.env
+    - mkdir -p /home/${USER}/.terraform.d
+    - |-
+      cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
+      {
+        "credentials": {
+          "app.terraform.io": {
+            "token": "${TFC_TOKEN}"
+          }
+        }
+      }
+      EOF
     - terraform init -backend-config="token=${TFC_TOKEN}"
     - terraform destroy --auto-approve
   tags: [inK8s]
