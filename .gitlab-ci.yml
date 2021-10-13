@@ -34,12 +34,18 @@ terraform-build-k3s:
     # - terraform plan -lock=false -var="vsphere_vcenter=${vsphere_vcenter}" -var="vsphere_user=${vsphere_user}" -var="vsphere_password=${vsphere_password}" -var="ssh_username=${ssh_username}" -var="ssh_password=${ssh_password}"
     - terraform apply --auto-approve
     - terraform output -json
+    - terraform output -json >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
+
   tags: [inK8s]
 
 deploy-k3s:
   stage: deploy
   script:
-    - export USER=$(whoami)
+    - echo ${USER}
+    - cat build.env
     - mkdir -p /home/${USER}/.kube
     - touch /home/${USER}/.kube/config
     - mkdir -p /home/${USER}/.ssh
@@ -57,6 +63,7 @@ deploy-k3s:
     - cat /home/${USER}/.kube/config
   needs:
     - job: terraform-build-k3s
+      artifacts: true
   artifacts:
       public: false
       paths:
