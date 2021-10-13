@@ -46,7 +46,6 @@ terraform-build-k3s:
 deploy-k3s:
   stage: deploy
   script:
-    - echo ${USER}
     - mkdir -p /home/${USER}/.kube
     - touch /home/${USER}/.kube/config
     - mkdir -p /home/${USER}/.ssh
@@ -58,13 +57,8 @@ deploy-k3s:
     - k3sup join --ip ${WORKER_1} --server-ip ${MASTER_1} --user ${USER_K3S} --k3s-version ${K3S_VERSION}
     - sleep 20
     - kubectl get nodes
-    - echo ${MASTER_NODE_NAME}
     - kubectl taint nodes ${MASTER_NODE_NAME} key=value:NoSchedule || true
-    - ls -lah /home/${USER}/.kube
-    - cat /home/${USER}/.kube/config
-    - pwd
     - cp /home/${USER}/.kube/config .
-    - cat config
   needs:
     - job: terraform-build-k3s
       artifacts: true
