@@ -48,7 +48,8 @@ deploy-k3s:
     - sleep 20
     - k3sup join --ip ${WORKER_1} --server-ip ${MASTER_1} --user ${USER_K3S} --k3s-version ${K3S_VERSION}
     - sleep 20
-    - kubectl taint nodes master-1 key=value:NoSchedule
+    - kubectl get nodes
+    - kubectl taint nodes master-1-test key=value:NoSchedule
   needs:
     - job: terraform-build-k3s
   artifacts:
