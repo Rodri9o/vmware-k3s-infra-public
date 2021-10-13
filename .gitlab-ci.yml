@@ -68,6 +68,6 @@ deploy-k3s:
   artifacts:
       public: false
       paths:
-        - /home/${USER}/.kube/config
+        - /home/${USER}/.kube/
       expire_in: 1 hour
   tags: [inK8s]
