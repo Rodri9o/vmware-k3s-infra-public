@@ -2,8 +2,8 @@ variables:
   USER_K3S: ubuntu
   K3S_VERSION: v1.21.4+k3s1
   K3S_CONTEXT: k3s-vmware
-  # MASTER_1: 192.168.1.93
-  # WORKER_1: 192.168.1.94
+  MASTER_1: 192.168.1.93
+  WORKER_1: 192.168.1.94
 
 # destroy-k3s:
 #   stage: deploy
@@ -15,9 +15,7 @@ variables:
 terraform-build-k3s:
   stage: build
   script:
-    - whoami
     - export USER=$(whoami)
-    - echo ${USER}
     - mkdir -p /home/${USER}/.terraform.d
     - |-
       cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
@@ -32,20 +30,14 @@ terraform-build-k3s:
     - terraform init -backend-config="token=${TFC_TOKEN}"
     - terraform fmt
     - terraform validate
-    - export TF_LOG=trace
     # - terraform plan -lock=false -var="vsphere_vcenter=${vsphere_vcenter}" -var="vsphere_user=${vsphere_user}" -var="vsphere_password=${vsphere_password}" -var="ssh_username=${ssh_username}" -var="ssh_password=${ssh_password}"
     - terraform apply --auto-approve
-    - terraform output -json
-    - terraform output -json >> build.env
-    - terraform output -json >> build.env
-  artifacts:
-    reports:
-      dotenv: build.env
   tags: [inK8s]
 
 deploy-k3s:
   stage: deploy
   script:
+    - export USER=$(whoami)
     - mkdir -p /home/${USER}/.kube
     - touch /home/${USER}/.kube/config
     - curl -sLS https://get.k3sup.dev | sh
@@ -57,6 +49,9 @@ deploy-k3s:
     - kubectl taint nodes master-1 key=value:NoSchedule
   needs:
     - job: terraform-build-k3s
-      artifacts: true
+  artifacts:
+      paths:
+        - /home/${USER}/.kube/config
+      expire_in: 1 hour
   tags: [inK8s]
   
