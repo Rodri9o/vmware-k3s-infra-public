@@ -62,6 +62,7 @@ deploy-k3s:
     - kubectl taint nodes ${MASTER_NODE_NAME} key=value:NoSchedule || true
     - ls -lah /home/${USER}/.kube
     - cat /home/${USER}/.kube/config
+    - pwd
   needs:
     - job: terraform-build-k3s
       artifacts: true
