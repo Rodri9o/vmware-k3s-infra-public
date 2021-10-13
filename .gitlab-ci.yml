@@ -36,6 +36,7 @@ terraform-build-k3s:
     - terraform apply --auto-approve
     - terraform output -json
     - cat build.env
+  # Use artifacts.reports.dotenv to pass variables from this job to the next
   artifacts:
     reports:
       dotenv: build.env
@@ -67,6 +68,6 @@ deploy-k3s:
   artifacts:
       public: false
       paths:
-        - /home/${USER}/.kube/config*
+        - /home/${USER}/.kube/config
       expire_in: 1 hour
   tags: [inK8s]
