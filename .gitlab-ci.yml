@@ -2,6 +2,7 @@ variables:
   USER_K3S: ubuntu
   K3S_VERSION: v1.21.4+k3s1
   K3S_CONTEXT: k3s-vmware
+  MASTER_NODE_NAME: master-test-1
   MASTER_1: 192.168.1.93
   WORKER_1: 192.168.1.94
 
@@ -32,6 +33,7 @@ terraform-build-k3s:
     - terraform validate
     # - terraform plan -lock=false -var="vsphere_vcenter=${vsphere_vcenter}" -var="vsphere_user=${vsphere_user}" -var="vsphere_password=${vsphere_password}" -var="ssh_username=${ssh_username}" -var="ssh_password=${ssh_password}"
     - terraform apply --auto-approve
+    - terraform output -json
   tags: [inK8s]
 
 deploy-k3s:
@@ -49,7 +51,8 @@ deploy-k3s:
     - k3sup join --ip ${WORKER_1} --server-ip ${MASTER_1} --user ${USER_K3S} --k3s-version ${K3S_VERSION}
     - sleep 20
     - kubectl get nodes
-    - kubectl taint nodes master-1-test key=value:NoSchedule
+    - echo ${MASTER_NODE_NAME}
+    - kubectl taint nodes ${MASTER_NODE_NAME} key=value:NoSchedule
   needs:
     - job: terraform-build-k3s
   artifacts:
