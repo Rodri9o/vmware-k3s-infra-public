@@ -54,8 +54,6 @@ deploy-k3s:
     - echo ${MASTER_NODE_NAME}
     - kubectl taint nodes ${MASTER_NODE_NAME} key=value:NoSchedule || true
     - ls -lah /home/${USER}/.kube
-    - mkdir -p 
-    - cp /home/${USER}/.kube/config
     - cat /home/${USER}/.kube/config
   needs:
     - job: terraform-build-k3s
