@@ -6,32 +6,10 @@ variables:
   MASTER_1: 192.168.1.93
   WORKER_1: 192.168.1.94
 
-destroy-k3s:
-  stage: deploy
-  script:
-    - export USER=$(whoami)
-    - echo $USER
-    - mkdir -p /home/${USER}/.terraform.d
-    - |-
-      cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
-      {
-        "credentials": {
-          "app.terraform.io": {
-            "token": "${TFC_TOKEN}"
-          }
-        }
-      }
-      EOF
-    - ls -lah /home/${USER}/.terraform.d/credentials.tfrc.json
-    - terraform init -backend-config="token=${TFC_TOKEN}"
-    - terraform apply --auto-approve -destroy
-  tags: [inK8s]
-
-# terraform-build-k3s:
-#   stage: build
+# destroy-k3s:
+#   stage: deploy
 #   script:
 #     - export USER=$(whoami)
-#     - echo USER=${USER} > build.env
 #     - mkdir -p /home/${USER}/.terraform.d
 #     - |-
 #       cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
@@ -44,40 +22,60 @@ destroy-k3s:
 #       }
 #       EOF
 #     - terraform init -backend-config="token=${TFC_TOKEN}"
-#     - terraform fmt
-#     - terraform validate
-#     - terraform apply --auto-approve
-#     - terraform output -json
-#     - cat build.env
-#   # Use artifacts.reports.dotenv to pass variables from this job to the next
-#   artifacts:
-#     reports:
-#       dotenv: build.env
-
+#     - terraform apply --auto-approve -destroy
 #   tags: [inK8s]
 
-# deploy-k3s:
-#   stage: deploy
-#   script:
-#     - mkdir -p /home/${USER}/.kube
-#     - touch /home/${USER}/.kube/config
-#     - mkdir -p /home/${USER}/.ssh
-#     - cp ${id_rsa} /home/${USER}/.ssh
-#     - curl -sLS https://get.k3sup.dev | sh
-#     - sudo install k3sup /usr/local/bin/
-#     - k3sup install --ip ${MASTER_1} --local-path ~/.kube/config --k3s-version ${K3S_VERSION} --context ${K3S_CONTEXT} --user ${USER_K3S}
-#     - sleep 20
-#     - k3sup join --ip ${WORKER_1} --server-ip ${MASTER_1} --user ${USER_K3S} --k3s-version ${K3S_VERSION}
-#     - sleep 20
-#     - kubectl get nodes
-#     - kubectl taint nodes ${MASTER_NODE_NAME} key=value:NoSchedule || true
-#     - cp /home/${USER}/.kube/config .
-#   needs:
-#     - job: terraform-build-k3s
-#       artifacts: true
-#   artifacts:
-#       public: false
-#       paths:
-#         - config
-#       expire_in: 1 hour
-#   tags: [inK8s]
+terraform-build-k3s:
+  stage: build
+  script:
+    - export USER=$(whoami)
+    - echo USER=${USER} > build.env
+    - mkdir -p /home/${USER}/.terraform.d
+    - |-
+      cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
+      {
+        "credentials": {
+          "app.terraform.io": {
+            "token": "${TFC_TOKEN}"
+          }
+        }
+      }
+      EOF
+    - terraform init -backend-config="token=${TFC_TOKEN}"
+    - terraform fmt
+    - terraform validate
+    - terraform apply --auto-approve
+    - terraform output -json
+    - cat build.env
+  # Use artifacts.reports.dotenv to pass variables from this job to the next
+  artifacts:
+    reports:
+      dotenv: build.env
+
+  tags: [inK8s]
+
+deploy-k3s:
+  stage: deploy
+  script:
+    - mkdir -p /home/${USER}/.kube
+    - touch /home/${USER}/.kube/config
+    - mkdir -p /home/${USER}/.ssh
+    - cp ${id_rsa} /home/${USER}/.ssh
+    - curl -sLS https://get.k3sup.dev | sh
+    - sudo install k3sup /usr/local/bin/
+    - k3sup install --ip ${MASTER_1} --local-path ~/.kube/config --k3s-version ${K3S_VERSION} --context ${K3S_CONTEXT} --user ${USER_K3S}
+    - sleep 20
+    - k3sup join --ip ${WORKER_1} --server-ip ${MASTER_1} --user ${USER_K3S} --k3s-version ${K3S_VERSION}
+    - sleep 20
+    - kubectl get nodes
+    - kubectl taint nodes ${MASTER_NODE_NAME} key=value:NoSchedule || true
+    - cp /home/${USER}/.kube/config .
+  needs:
+    - job: terraform-build-k3s
+      artifacts: true
+  artifacts:
+      public: false
+      paths:
+        - config
+      expire_in: 1 hour
+  tags: [inK8s]
