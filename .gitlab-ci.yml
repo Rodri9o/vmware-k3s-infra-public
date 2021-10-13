@@ -57,3 +57,4 @@ deploy-k3s:
     - job: terraform-build-k3s
       artifacts: true
   tags: [inK8s]
+  
