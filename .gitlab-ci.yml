@@ -63,12 +63,14 @@ deploy-k3s:
     - ls -lah /home/${USER}/.kube
     - cat /home/${USER}/.kube/config
     - pwd
+    - cp /home/${USER}/.kube/config $PWD
+    - cat $PWD/config
   needs:
     - job: terraform-build-k3s
       artifacts: true
   artifacts:
       public: false
       paths:
-        - /home/${USER}/.kube/
+        - config
       expire_in: 1 hour
   tags: [inK8s]
