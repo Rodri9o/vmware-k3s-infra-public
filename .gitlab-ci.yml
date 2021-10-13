@@ -33,7 +33,7 @@ terraform-build-k3s:
     - terraform fmt
     - terraform validate
     - export TF_LOG=trace
-    - terraform plan -lock=false
+    - terraform plan -lock=false -var="vsphere_vcenter=${vsphere_vcenter}" -var="vsphere_user=${vsphere_user}" -var="vsphere_password=${vsphere_password}" -var="ssh_username=${ssh_username}" -var="ssh_password=${ssh_password}" --auto-approve
     - terraform apply -var="vsphere_vcenter=${vsphere_vcenter}" -var="vsphere_user=${vsphere_user}" -var="vsphere_password=${vsphere_password}" -var="ssh_username=${ssh_username}" -var="ssh_password=${ssh_password}" --auto-approve
     - terraform output -json
     - terraform output -json >> build.env
