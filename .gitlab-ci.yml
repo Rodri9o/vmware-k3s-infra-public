@@ -46,7 +46,6 @@ deploy-k3s:
   stage: deploy
   script:
     - echo ${USER}
-    - cat build.env
     - mkdir -p /home/${USER}/.kube
     - touch /home/${USER}/.kube/config
     - mkdir -p /home/${USER}/.ssh
