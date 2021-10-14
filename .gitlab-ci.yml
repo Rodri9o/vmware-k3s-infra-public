@@ -10,7 +10,7 @@ variables:
   KUBERNETES_POD_ANNOTATIONS_1: "vault.hashicorp.com/agent-inject=true"
   KUBERNETES_POD_ANNOTATIONS_2: "vault.hashicorp.com/agent-inject-token=true"
   KUBERNETES_POD_ANNOTATIONS_3: "vault.hashicorp.com/agent-pre-populate-only=true"
-  KUBERNETES_POD_ANNOTATIONS_4: "vault.hashicorp.com/role=wealthattendant"
+  KUBERNETES_POD_ANNOTATIONS_4: "vault.hashicorp.com/role=externalapps"
   KUBERNETES_POD_ANNOTATIONS_5: "vault.hashicorp.com/secret-volume-path=/app/secrets/"
 
 # destroy-k3s:
