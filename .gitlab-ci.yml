@@ -5,7 +5,7 @@ variables:
   MASTER_NODE_NAME: master-test-1
   MASTER_1: 192.168.1.93
   WORKER_1: 192.168.1.94
-  VAULT_ADDR: http://vault-raft-active.vault-raft.svc.cluster.local
+  VAULT_ADDR: http://vault-raft-active.vault-raft.svc.cluster.local:8200
   KUBERNETES_SERVICE_ACCOUNT_OVERWRITE: gitlab-public-gitlab-runner
   KUBERNETES_POD_ANNOTATIONS_1: "vault.hashicorp.com/agent-inject=true"
   KUBERNETES_POD_ANNOTATIONS_2: "vault.hashicorp.com/agent-inject-token=true"
@@ -77,7 +77,7 @@ deploy-k3s:
     - sleep 20
     - k3sup join --ip ${WORKER_1} --server-ip ${MASTER_1} --user ${USER_K3S} --k3s-version ${K3S_VERSION}
     - sleep 20
-    - kubectl get nodes
+    - kubectl get nodes -owide
     - kubectl taint nodes ${MASTER_NODE_NAME} key=value:NoSchedule || true
     # Store the kube config file in Vault
     - cat /home/${USER}/.kube/config | base64 | vault kv put external/k3sdemo k3s_config_base64=-
