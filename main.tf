@@ -2,9 +2,15 @@
 # Deploying VMware VM #
 # =================== #
 terraform {
+  required_providers {
+    vsphere = {
+      source  = "hashicorp/vsphere"
+      version = "2.0.2"
+    }
+  }
   backend "remote" {
     organization = "HashiCorp-Sam"
-    token        = "${TFC_TOKEN}"
+    token        = TFC_TOKEN
 
     workspaces {
       name = "vmware-k3s-infra"
@@ -12,16 +18,27 @@ terraform {
   }
 }
 
+# Connect to VMware vSphere vCenter
+provider "vsphere" {
+  vim_keep_alive = 30
+  user           = var.vsphere_user
+  password       = var.vsphere_password
+  vsphere_server = var.vsphere_vcenter
+
+  # If you have a self-signed cert
+  allow_unverified_ssl = var.vsphere-unverified-ssl
+}
+
 # Master VM
 module "vsphere_vm_master" {
-  count = var.master_vm_count
-  source  = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
-  version = "0.1.0"
-  vsphere_user           = var.vsphere_user
-  vsphere_password       = var.vsphere_password
-  vsphere_vcenter        = var.vsphere_vcenter
-  ssh_username           = var.ssh_username
-  ssh_password           = var.ssh_password
+  count            = var.master_vm_count
+  source           = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
+  version          = "0.1.1"
+  vsphere_user     = var.vsphere_user
+  vsphere_password = var.vsphere_password
+  vsphere_vcenter  = var.vsphere_vcenter
+  ssh_username     = var.ssh_username
+  ssh_password     = var.ssh_password
   # vm_count               = var.master_vm_count
   name                   = "${var.master_name}-${count.index + 1}"
   cpu                    = var.master_cpu
@@ -44,14 +61,14 @@ module "vsphere_vm_master" {
 
 # Worker VM
 module "vsphere_vm_worker" {
-  count = var.worker_vm_count
-  source  = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
-  version = "0.1.0"
-  vsphere_user           = var.vsphere_user
-  vsphere_password       = var.vsphere_password
-  vsphere_vcenter        = var.vsphere_vcenter
-  ssh_username           = var.ssh_username
-  ssh_password           = var.ssh_password
+  count            = var.worker_vm_count
+  source           = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
+  version          = "0.1.1"
+  vsphere_user     = var.vsphere_user
+  vsphere_password = var.vsphere_password
+  vsphere_vcenter  = var.vsphere_vcenter
+  ssh_username     = var.ssh_username
+  ssh_password     = var.ssh_password
   # vm_count               = var.worker_vm_count
   name                   = "${var.worker_name}-${count.index + 1}"
   cpu                    = var.worker_cpu
