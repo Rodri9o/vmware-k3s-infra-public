@@ -15,7 +15,7 @@ terraform {
 # Master VM
 module "vsphere_vm_master" {
   source  = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
-  version = "0.0.10"
+  version = "0.0.11"
   vsphere_user           = var.vsphere_user
   vsphere_password       = var.vsphere_password
   vsphere_vcenter        = var.vsphere_vcenter
@@ -44,7 +44,7 @@ module "vsphere_vm_master" {
 # Worker VM
 module "vsphere_vm_worker" {
   source  = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
-  version = "0.0.10"
+  version = "0.0.11"
   vsphere_user           = var.vsphere_user
   vsphere_password       = var.vsphere_password
   vsphere_vcenter        = var.vsphere_vcenter
