@@ -1,7 +1,7 @@
 output "master_ips" {
   value = {
     for vm in module.vsphere_vm_master :
-    vm.name => vm.guest_ip_addresses[0]
+    vm.guest_ip_addresses => vm.guest_ip_addresses[0]
   }
 }
 
@@ -17,6 +17,6 @@ output "master_ips" {
 output "worker_ips" {
   value = {
     for vm in module.vsphere_vm_worker :
-    vm.name => vm.guest_ip_addresses[0]
+    vm.guest_ip_addresses => vm.guest_ip_addresses[0]
   }
 }
