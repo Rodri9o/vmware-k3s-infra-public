@@ -33,7 +33,7 @@ provider "vsphere" {
 module "vsphere_vm_master" {
   count            = var.master_vm_count
   source           = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
-  version          = "0.1.6"
+  version          = "0.1.7"
   vsphere_user     = var.vsphere_user
   vsphere_password = var.vsphere_password
   vsphere_vcenter  = var.vsphere_vcenter
@@ -63,7 +63,7 @@ module "vsphere_vm_master" {
 module "vsphere_vm_worker" {
   count            = var.worker_vm_count
   source           = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
-  version          = "0.1.6"
+  version          = "0.1.7"
   vsphere_user     = var.vsphere_user
   vsphere_password = var.vsphere_password
   vsphere_vcenter  = var.vsphere_vcenter
