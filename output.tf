@@ -1,7 +1,7 @@
 # output "master_ips" {
 #   value = {
 #     for vm in module.vsphere_vm_master :
-#     vm.ip => vm.guest_ip_addresses[0]
+#     vm.vsphere_virtual_machine.vm.name => vm.guest_ip_addresses[0]
 #   }
 # }
 
