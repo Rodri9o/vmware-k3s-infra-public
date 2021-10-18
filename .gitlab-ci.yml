@@ -91,3 +91,4 @@ deploy-k3s:
   #       - config
   #     expire_in: 1 hour
   tags: [inK8s]
+  
