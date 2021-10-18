@@ -33,7 +33,7 @@ provider "vsphere" {
 module "vsphere_vm_master" {
   count            = var.master_vm_count
   source           = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
-  version          = "0.1.15"
+  version          = "0.2.0"
   vsphere_user     = var.vsphere_user
   vsphere_password = var.vsphere_password
   vsphere_vcenter  = var.vsphere_vcenter
@@ -44,8 +44,8 @@ module "vsphere_vm_master" {
   cpu                    = var.master_cpu
   cores-per-socket       = var.master_cores-per-socket
   ram                    = var.master_ram
-  thin_provisioned       = var.master_thin_provisioned
-  vm-template-name       = var.master_vm-template-name
+  disksize               = var.master_disksize
+  vm-template-name       = var.vm-template-name
   vm-guest-id            = var.vm-guest-id
   vsphere-unverified-ssl = var.vsphere-unverified-ssl
   vsphere-datacenter     = var.vsphere-datacenter
@@ -63,7 +63,7 @@ module "vsphere_vm_master" {
 module "vsphere_vm_worker" {
   count            = var.worker_vm_count
   source           = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
-  version          = "0.1.15"
+  version          = "0.2.0"
   vsphere_user     = var.vsphere_user
   vsphere_password = var.vsphere_password
   vsphere_vcenter  = var.vsphere_vcenter
@@ -74,8 +74,8 @@ module "vsphere_vm_worker" {
   cpu                    = var.worker_cpu
   cores-per-socket       = var.worker_cores-per-socket
   ram                    = var.worker_ram
-  thin_provisioned       = var.worker_thin_provisioned
-  vm-template-name       = var.worker_vm-template-name
+  disksize               = var.worker_disksize
+  vm-template-name       = var.vm-template-name
   vm-guest-id            = var.vm-guest-id
   vsphere-unverified-ssl = var.vsphere-unverified-ssl
   vsphere-datacenter     = var.vsphere-datacenter

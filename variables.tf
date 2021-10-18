@@ -116,27 +116,12 @@ variable "worker_ram" {
   description = "Amount of RAM for the vSphere virtual machines (example: 2048)"
 }
 
-variable "master_thin_provisioned" {
-  type = bool
-  description = "Thin or Thick provisioned disk, needs to follow that of the template"
-}
-
-variable "worker_thin_provisioned" {
-  type = bool
-  description = "Thin or Thick provisioned disk, needs to follow that of the template"
-}
-
 variable "vm-guest-id" {
   type        = string
   description = "The ID of virtual machines operating system"
 }
 
-variable "master_vm-template-name" {
-  type        = string
-  description = "The template to clone to create the VM"
-}
-
-variable "worker_vm-template-name" {
+variable "vm-template-name" {
   type        = string
   description = "The template to clone to create the VM"
 }
