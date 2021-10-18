@@ -1,6 +1,8 @@
 # Overview
 
-Deploy master and worker nodes for k3s
+Deploy master and worker nodes for k3s on vSphere using a Packer image already built. You can find a reference to the Packer [GitLab repo here.](https://gitlab.com/public-projects3/infrastructure-vmware-public/vmware-packer-ubuntu20-04-public/-/tree/main)
+
+This repo uses a [Terraform module to deploy VMs](https://gitlab.com/all-my-projects1/infrastructure-vmware/terraform-vsphere-vsphere_vm) in vSphere. The module uses Cloud-Init for customization.
 
 ## Test
 
