@@ -5,19 +5,19 @@
 variable "vsphere_user" {
   type        = string
   description = "VMware vSphere user name"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "vsphere_password" {
   type        = string
   description = "VMware vSphere password"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "vsphere_vcenter" {
   type        = string
   description = "VMWare vCenter server FQDN / IP"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "vsphere-unverified-ssl" {
@@ -39,7 +39,7 @@ variable "vsphere-cluster" {
 variable "vsphere-template-folder" {
   type        = string
   description = "Template folder"
-  default = "Templates"
+  default     = "Templates"
 }
 
 #================================#
@@ -48,12 +48,12 @@ variable "vsphere-template-folder" {
 
 variable "master_vm_count" {
   description = "Number of VMs"
-  default     =  1
+  default     = 1
 }
 
 variable "worker_vm_count" {
   description = "Number of VMs"
-  default     =  1
+  default     = 1
 }
 
 variable "master_name" {
@@ -69,7 +69,7 @@ variable "worker_name" {
 variable "vm-name-prefix" {
   type        = string
   description = "Name of VM prefix"
-  default     =  "k3sup"
+  default     = "k3sup"
 }
 
 variable "vm-datastore" {
@@ -141,18 +141,18 @@ variable "vm-domain" {
 }
 
 variable "dns_server_list" {
-  type = list(string)
+  type        = list(string)
   description = "List of DNS servers"
-  default = ["8.8.8.8", "8.8.4.4"]
+  default     = ["8.8.8.8", "8.8.4.4"]
 }
 
 variable "master_ipv4_address" {
-  type = list(string)
+  type        = list(string)
   description = "List of ipv4 addresses for K8s masters"
 }
 
 variable "worker_ipv4_address" {
-  type = list(string)
+  type        = list(string)
   description = "List of ipv4 addresses for K8s workers"
 }
 
@@ -165,11 +165,11 @@ variable "ipv4_netmask" {
 }
 
 variable "ssh_username" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "ssh_password" {
-  type = string
+  type      = string
   sensitive = true
 }
