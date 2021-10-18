@@ -116,6 +116,14 @@ variable "worker_ram" {
   description = "Amount of RAM for the vSphere virtual machines (example: 2048)"
 }
 
+variable "master_disksize" {
+  description = "Disk size in GB"
+}
+
+variable "worker_disksize" {
+  description = "Disk size in GB"
+}
+
 variable "vm-guest-id" {
   type        = string
   description = "The ID of virtual machines operating system"
