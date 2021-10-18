@@ -12,7 +12,7 @@ worker_cpu              = 4
 worker_cores-per-socket = 1
 worker_ram              = 4096
 worker_disksize         = 650 # in GB
-worker_ipv4_address     = ["192.168.1.94"]
+worker_ipv4_address     = ["192.168.1.94", "192.168.1.95", "192.168.1.96"]
 
 vm-guest-id            = "ubuntu64Guest"
 vsphere-unverified-ssl = "true"

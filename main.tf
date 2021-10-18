@@ -31,15 +31,14 @@ provider "vsphere" {
 
 # Master VM
 module "vsphere_vm_master" {
-  count            = var.master_vm_count
-  source           = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
-  version          = "0.2.2"
-  vsphere_user     = var.vsphere_user
-  vsphere_password = var.vsphere_password
-  vsphere_vcenter  = var.vsphere_vcenter
-  ssh_username     = var.ssh_username
-  ssh_password     = var.ssh_password
-  # vm_count               = var.master_vm_count
+  count                  = var.master_vm_count
+  source                 = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
+  version                = "0.2.2"
+  vsphere_user           = var.vsphere_user
+  vsphere_password       = var.vsphere_password
+  vsphere_vcenter        = var.vsphere_vcenter
+  ssh_username           = var.ssh_username
+  ssh_password           = var.ssh_password
   name                   = "${var.master_name}-${count.index + 1}"
   cpu                    = var.master_cpu
   cores-per-socket       = var.master_cores-per-socket
@@ -61,15 +60,14 @@ module "vsphere_vm_master" {
 
 # Worker VM
 module "vsphere_vm_worker" {
-  count            = var.worker_vm_count
-  source           = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
-  version          = "0.2.2"
-  vsphere_user     = var.vsphere_user
-  vsphere_password = var.vsphere_password
-  vsphere_vcenter  = var.vsphere_vcenter
-  ssh_username     = var.ssh_username
-  ssh_password     = var.ssh_password
-  # vm_count               = var.worker_vm_count
+  count                  = var.worker_vm_count
+  source                 = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
+  version                = "0.2.2"
+  vsphere_user           = var.vsphere_user
+  vsphere_password       = var.vsphere_password
+  vsphere_vcenter        = var.vsphere_vcenter
+  ssh_username           = var.ssh_username
+  ssh_password           = var.ssh_password
   name                   = "${var.worker_name}-${count.index + 1}"
   cpu                    = var.worker_cpu
   cores-per-socket       = var.worker_cores-per-socket
