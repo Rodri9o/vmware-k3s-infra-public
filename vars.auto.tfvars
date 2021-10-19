@@ -6,7 +6,7 @@ master_ram              = 4096
 master_disksize         = 100 # in GB
 master_ipv4_address     = ["192.168.1.93"]
 
-worker_vm_count         = 1
+worker_vm_count         = 3
 worker_name             = "worker-test"
 worker_cpu              = 4
 worker_cores-per-socket = 1
