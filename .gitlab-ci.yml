@@ -50,6 +50,7 @@ terraform-build-k3s:
     - terraform fmt
     - terraform validate
     - terraform apply --auto-approve
+    - terraform output -json
     - echo MASTER_1=$(terraform output -json | jq -r '.master_ips.value[0]') >> build.env
     - echo WORKER_1=$(terraform output -json | jq -r '.worker_ips.value[0]') >> build.env
     - echo WORKER_2=$(terraform output -json | jq -r '.worker_ips.value[1]') >> build.env || true
