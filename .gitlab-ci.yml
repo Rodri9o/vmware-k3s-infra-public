@@ -16,31 +16,10 @@ variables:
   KUBERNETES_POD_ANNOTATIONS_4: "vault.hashicorp.com/role=externalapps"
   KUBERNETES_POD_ANNOTATIONS_5: "vault.hashicorp.com/secret-volume-path=/app/secrets/"
 
-destroy-k3s:
-  stage: deploy
-  script:
-    - export USER=$(whoami)
-    - mkdir -p /home/${USER}/.terraform.d
-    - |-
-      cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
-      {
-        "credentials": {
-          "app.terraform.io": {
-            "token": "${TFC_TOKEN}"
-          }
-        }
-      }
-      EOF
-    - ./createautovars.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}"
-    - terraform init -backend-config="token=${TFC_TOKEN}"
-    - terraform apply --auto-approve -destroy
-  tags: [inK8s]
-
-# terraform-build-k3s:
-#   stage: build
+# destroy-k3s:
+#   stage: deploy
 #   script:
 #     - export USER=$(whoami)
-#     - echo USER=${USER} > build.env
 #     - mkdir -p /home/${USER}/.terraform.d
 #     - |-
 #       cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
@@ -52,42 +31,63 @@ destroy-k3s:
 #         }
 #       }
 #       EOF
-#     # We need to make sure the command below passes entire lists so you have to surrond them with quotes " "
 #     - ./createautovars.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}"
 #     - terraform init -backend-config="token=${TFC_TOKEN}"
-#     - terraform fmt
-#     - terraform validate
-#     - terraform apply --auto-approve
-#     - terraform output -json
-#   # Use artifacts.reports.dotenv to pass variables in build.env from this job to the next
-#   artifacts:
-#     reports:
-#       dotenv: build.env
-
+#     - terraform apply --auto-approve -destroy
 #   tags: [inK8s]
 
-# deploy-k3s:
-#   stage: deploy
-#   script:
-#     - export VAULT_TOKEN=$(cat /app/secrets/token)
-#     - export VAULT_ADDR=${VAULT_ADDR}
-#     - mkdir -p /home/${USER}/.kube
-#     - touch /home/${USER}/.kube/config
-#     - mkdir -p /home/${USER}/.ssh
-#     - cp ${id_rsa} /home/${USER}/.ssh
-#     # We need to make sure the command below passes entire lists so you have to surrond them with quotes " "
-#     - ./installk3s.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}" "${USER_K3S}" "${K3S_VERSION}" "${K3S_CONTEXT}"
-#     # Store the kube config file in Vault
-#     - cat /home/${USER}/.kube/config | base64 | vault kv put external/k3sdemo k3s_config_base64=-
-#     # Use the command below to get it ready to be sent out of the pipeline as artifact...this is HIGHLY INSECURE
-#     # - cp /home/${USER}/.kube/config .
-#   needs:
-#     - job: terraform-build-k3s
-#       artifacts: true
-#   # If you don't have vault set up, you can use the artifacts stanza below to get the kube config file...this is HIGHLY INSECURE
-#   # artifacts:
-#   #     public: false
-#   #     paths:
-#   #       - config
-#   #     expire_in: 1 hour
-#   tags: [inK8s]
+terraform-build-k3s:
+  stage: build
+  script:
+    - export USER=$(whoami)
+    - echo USER=${USER} > build.env
+    - mkdir -p /home/${USER}/.terraform.d
+    - |-
+      cat > /home/${USER}/.terraform.d/credentials.tfrc.json <<-EOF
+      {
+        "credentials": {
+          "app.terraform.io": {
+            "token": "${TFC_TOKEN}"
+          }
+        }
+      }
+      EOF
+    # We need to make sure the command below passes entire lists so you have to surrond them with quotes " "
+    - ./createautovars.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}"
+    - terraform init -backend-config="token=${TFC_TOKEN}"
+    - terraform fmt
+    - terraform validate
+    - terraform apply --auto-approve
+    - terraform output -json
+  # Use artifacts.reports.dotenv to pass variables in build.env from this job to the next
+  artifacts:
+    reports:
+      dotenv: build.env
+
+  tags: [inK8s]
+
+deploy-k3s:
+  stage: deploy
+  script:
+    - export VAULT_TOKEN=$(cat /app/secrets/token)
+    - export VAULT_ADDR=${VAULT_ADDR}
+    - mkdir -p /home/${USER}/.kube
+    - touch /home/${USER}/.kube/config
+    - mkdir -p /home/${USER}/.ssh
+    - cp ${id_rsa} /home/${USER}/.ssh
+    # We need to make sure the command below passes entire lists so you have to surrond them with quotes " "
+    - ./installk3s.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}" "${USER_K3S}" "${K3S_VERSION}" "${K3S_CONTEXT}"
+    # Store the kube config file in Vault
+    - cat /home/${USER}/.kube/config | base64 | vault kv put external/k3sdemo k3s_config_base64=-
+    # Use the command below to get it ready to be sent out of the pipeline as artifact...this is HIGHLY INSECURE
+    # - cp /home/${USER}/.kube/config .
+  needs:
+    - job: terraform-build-k3s
+      artifacts: true
+  # If you don't have vault set up, you can use the artifacts stanza below to get the kube config file...this is HIGHLY INSECURE
+  # artifacts:
+  #     public: false
+  #     paths:
+  #       - config
+  #     expire_in: 1 hour
+  tags: [inK8s]

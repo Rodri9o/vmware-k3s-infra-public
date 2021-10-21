@@ -25,4 +25,10 @@ for (( i=0; i<${#arrWORKER_IPS[@]}; i++ ))
 
 sleep 20
 kubectl get nodes -owide
-kubectl taint nodes ${arrMASTER_NAMES[0]} key=value:NoSchedule || true
+
+for (( i=0; i<${#arrMASTER_NAMES[@]}; i++ ))
+    do  
+        kubectl taint nodes ${arrMASTER_NAMES[i]} key=value:NoSchedule || true
+    done
+
+kubectl get nodes -o json | jq '.items[].spec.taints'
