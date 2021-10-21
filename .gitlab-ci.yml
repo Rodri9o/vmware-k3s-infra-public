@@ -81,7 +81,7 @@ deploy-k3s:
     - cp ${id_rsa} /home/${USER}/.ssh
     - ls -lah
     # We need to make sure the command below passes entire lists so you have to surrond them with quotes " "
-    - ./installk3s.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}" ${USER_K3S} ${K3S_VERSION} ${K3S_CONTEXT}
+    - ./installk3s.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}" "${USER_K3S}" "${K3S_VERSION}" "${K3S_CONTEXT}"
     # - curl -sLS https://get.k3sup.dev | sh
     # - sudo install k3sup /usr/local/bin/
     # - k3sup install --ip ${MASTER_1} --local-path ~/.kube/config --k3s-version ${K3S_VERSION} --context ${K3S_CONTEXT} --user ${USER_K3S}
