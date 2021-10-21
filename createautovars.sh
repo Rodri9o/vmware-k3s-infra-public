@@ -10,6 +10,11 @@ arrWORKER_NAMES=($2)
 arrMASTER_IPS=($3)
 arrWORKER_IPS=($4)
 
+echo $1
+echo $2
+echo $3
+echo $4
+
 echo $arrMASTER_NAMES
 echo $arrWORKER_NAMES
 echo $arrMASTER_IPS
