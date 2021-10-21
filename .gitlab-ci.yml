@@ -4,7 +4,7 @@ variables:
   K3S_CONTEXT: k3s-vmware-test
   MASTER_COUNT: 1
   WORKER_COUNT: 3
-  test: [0 1]
+  test: "john doe"
   MASTER_1_NAME: master-test-1
   WORKER_1_NAME: worker-test-1
   WORKER_2_NAME: worker-test-2
@@ -43,6 +43,9 @@ variables:
 terraform-build-k3s:
   stage: build
   script:
+    - echo test
+    - echo test[0]
+    - echo test[1]
     - export USER=$(whoami)
     - echo USER=${USER} > build.env
     - mkdir -p /home/${USER}/.terraform.d
