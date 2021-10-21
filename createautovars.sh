@@ -10,10 +10,10 @@ arrWORKER_NAMES=($2)
 arrMASTER_IPS=($3)
 arrWORKER_IPS=($4)
 
-echo arrMASTER_NAMES
-echo arrWORKER_NAMES
-echo arrMASTER_IPS
-echo arrWORKER_IPS
+echo $arrMASTER_NAMES
+echo $arrWORKER_NAMES
+echo $arrMASTER_IPS
+echo $arrWORKER_IPS
 
 echo master_nodes = { > ips.auto.tfvars
 for (( i=0; i<${#arrMASTER_NAMES[@]}; i++ ))
