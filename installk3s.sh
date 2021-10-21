@@ -14,15 +14,18 @@ k3sup install --ip ${arrMASTER_IPS[0]} --local-path ~/.kube/config --k3s-version
 sleep 20
 
 pwd
-ls -lah /home/ubuntu/.ssh
+ls -lah /home/appuser/.ssh
 ls -lah ~/.ssh
-
+whoami
 for (( i=1; i<${#arrMASTER_IPS[@]}; i++ ))
     do  
         echo ${arrMASTER_IPS[0]}
         echo ${arrMASTER_IPS[i]}
-        k3sup join --ip ${arrMASTER_IPS[i]} --server-ip ${arrMASTER_IPS[0]} --user ${USER_K3S} --server-user $USER --k3s-version ${K3S_VERSION} --server
+        ssh-add ~/.ssh/id_rsa
+        k3sup join --ip ${arrMASTER_IPS[i]} --server-ip ${arrMASTER_IPS[0]} --user ${USER_K3S} --k3s-version ${K3S_VERSION} --server
     done
+sudo tail -f /var/log/auth.log
+
 sleep 20
 for (( i=0; i<${#arrWORKER_IPS[@]}; i++ ))
     do  
