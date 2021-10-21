@@ -43,9 +43,9 @@ variables:
 terraform-build-k3s:
   stage: build
   script:
-    - echo test
-    - echo test[0]
-    - echo test[1]
+    - echo $test
+    - echo $test[0]
+    - echo $test[1]
     - export USER=$(whoami)
     - echo USER=${USER} > build.env
     - mkdir -p /home/${USER}/.terraform.d
