@@ -59,7 +59,7 @@ terraform-build-k3s:
         }
       }
       EOF
-    - ./createautovars.sh `${MASTER_NAMES}` `${WORKER_NAMES}` `${MASTER_IPS}` `${WORKER_IPS}`
+    - ./createautovars.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}"
     - cat ips.auto.tfvars
     - terraform init -backend-config="token=${TFC_TOKEN}"
     - terraform fmt
