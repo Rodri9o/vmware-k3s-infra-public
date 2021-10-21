@@ -1,9 +1,5 @@
 #!/usr/bin/bash
 # ./createautovars.sh "master-test-1" "worker-test-1 worker-test-2 worker-test-3" "192.168.1.93" "192.168.1.94 192.168.1.95 192.168.1.96"
-# MASTER_NAMES="master-test-1"
-# WORKER_NAMES="worker-test-1 worker-test-2 worker-test-3"
-# MASTER_IPS="192.168.1.93"
-# WORKER_IPS="192.168.1.94 192.168.1.95 192.168.1.96"
 
 arrMASTER_NAMES=($1)
 arrWORKER_NAMES=($2)

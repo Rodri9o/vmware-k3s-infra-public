@@ -1,6 +1,5 @@
 .terraform
 secrets.sh
 mytestconfig
-test.sh
+tests
 terraform_output.json
-test2.sh

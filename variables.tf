@@ -56,16 +56,6 @@ variable "worker_vm_count" {
   default     = 1
 }
 
-# variable "master_name" {
-#   type        = string
-#   description = "The name of the vSphere virtual machines and the hostname of the machine"
-# }
-
-# variable "worker_name" {
-#   type        = string
-#   description = "The name of the vSphere virtual machines and the hostname of the machine"
-# }
-
 variable "vm-name-prefix" {
   type        = string
   description = "Name of VM prefix"
@@ -145,16 +135,6 @@ variable "dns_server_list" {
   description = "List of DNS servers"
   default     = ["8.8.8.8", "8.8.4.4"]
 }
-
-# variable "master_ipv4_address" {
-#   type        = list(string)
-#   description = "List of ipv4 addresses for K8s masters"
-# }
-
-# variable "worker_ipv4_address" {
-#   type        = list(string)
-#   description = "List of ipv4 addresses for K8s workers"
-# }
 
 variable "master_nodes" {
   type        = map(string)

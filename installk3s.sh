@@ -10,7 +10,7 @@ K3S_CONTEXT=$7
 curl -sLS https://get.k3sup.dev | sh
 sudo install k3sup /usr/local/bin/
 
-k3sup install --ip ${arrMASTER_IPS[0]} --local-path ~/.kube/config --k3s-version ${K3S_VERSION} --context ${K3S_CONTEXT} --user ${USER_K3S}
+k3sup install --ip ${arrMASTER_IPS[0]} --local-path ~/.kube/config --k3s-version ${K3S_VERSION} --context ${K3S_CONTEXT} --user ${USER_K3S} --cluster
 sleep 20
 
 for (( i=1; i<${#arrMASTER_IPS[@]}; i++ ))
