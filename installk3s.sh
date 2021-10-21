@@ -9,7 +9,7 @@ K3S_CONTEXT=$7
 
 curl -sLS https://get.k3sup.dev | sh
 sudo install k3sup /usr/local/bin/
-# I'm only installing one master node, I haven't looked into multi-master nodes for HA
+
 k3sup install --ip ${arrMASTER_IPS[0]} --local-path ~/.kube/config --k3s-version ${K3S_VERSION} --context ${K3S_CONTEXT} --user ${USER_K3S}
 sleep 20
 
