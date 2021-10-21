@@ -2,7 +2,17 @@ variables:
   USER_K3S: ubuntu
   K3S_VERSION: v1.21.4+k3s1
   K3S_CONTEXT: k3s-vmware-test
-  MASTER_NODE_NAME: master-test-1
+  MASTER_COUNT: 1
+  WORKER_COUNT: 3
+  test: [0 1]
+  MASTER_1_NAME: master-test-1
+  WORKER_1_NAME: worker-test-1
+  WORKER_2_NAME: worker-test-2
+  WORKER_3_NAME: worker-test-3
+  MASTER_1_IP: "192.168.1.93"
+  WORKER_1_IP: "192.168.1.94"
+  WORKER_2_IP: "192.168.1.95"
+  WORKER_3_IP: "192.168.1.96"
   VAULT_ADDR: http://vault-raft-active.vault-raft.svc.cluster.local:8200
   KUBERNETES_SERVICE_ACCOUNT_OVERWRITE: gitlab-public-gitlab-runner
   KUBERNETES_POD_ANNOTATIONS_1: "vault.hashicorp.com/agent-inject=true"
@@ -46,6 +56,17 @@ terraform-build-k3s:
         }
       }
       EOF
+    - |-
+      cat > ips.auto.tfvars <<-EOF
+      master_nodes = {
+        ${MASTER_1_NAME} = ${MASTER_1_IP}
+      }
+      worker_nodes = {
+        ${WORKER_1_NAME} = ${WORKER_1_IP}
+        ${WORKER_2_NAME} = ${WORKER_2_IP}
+        ${WORKER_3_NAME} = ${WORKER_3_IP}
+      }
+      EOF
     - terraform init -backend-config="token=${TFC_TOKEN}"
     - terraform fmt
     - terraform validate
@@ -81,7 +102,7 @@ deploy-k3s:
     - k3sup join --ip ${WORKER_3} --server-ip ${MASTER_1} --user ${USER_K3S} --k3s-version ${K3S_VERSION} || true
     - sleep 20
     - kubectl get nodes -owide
-    - kubectl taint nodes ${MASTER_NODE_NAME} key=value:NoSchedule || true
+    - kubectl taint nodes ${MASTER_1_NAME} key=value:NoSchedule || true
     # Store the kube config file in Vault
     - cat /home/${USER}/.kube/config | base64 | vault kv put external/k3sdemo k3s_config_base64=-
     # Use the command below to get it ready to be sent out of the pipeline as artifact...this is HIGHLY INSECURE
