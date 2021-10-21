@@ -3,9 +3,11 @@ variables:
   K3S_VERSION: v1.21.4+k3s1
   K3S_CONTEXT: k3s-vmware-test
   MASTER_NAMES: "master-test-1"
-  WORKER_NAMES: "worker-test-1 worker-test-2 worker-test-3"
+  # WORKER_NAMES: "worker-test-1 worker-test-2 worker-test-3"
+  WORKER_NAMES: "worker-test-1"
   MASTER_IPS: "192.168.1.93"
-  WORKER_IPS: "192.168.1.94 192.168.1.95 192.168.1.96"
+  # WORKER_IPS: "192.168.1.94 192.168.1.95 192.168.1.96"
+  WORKER_IPS: "192.168.1.94"
   VAULT_ADDR: http://vault-raft-active.vault-raft.svc.cluster.local:8200
   KUBERNETES_SERVICE_ACCOUNT_OVERWRITE: gitlab-public-gitlab-runner
   KUBERNETES_POD_ANNOTATIONS_1: "vault.hashicorp.com/agent-inject=true"
@@ -29,6 +31,7 @@ variables:
 #         }
 #       }
 #       EOF
+#     - ./createautovars.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}"
 #     - terraform init -backend-config="token=${TFC_TOKEN}"
 #     - terraform apply --auto-approve -destroy
 #   tags: [inK8s]
@@ -51,18 +54,11 @@ terraform-build-k3s:
       EOF
     # We need to make sure the command below passes entire lists so you have to surrond them with quotes " "
     - ./createautovars.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}"
-    - cat ips.auto.tfvars
-    - ls -lah
     - terraform init -backend-config="token=${TFC_TOKEN}"
     - terraform fmt
     - terraform validate
     - terraform apply --auto-approve
     - terraform output -json
-    # - echo MASTER_1=$(terraform output -json | jq -r '.master_ips.value[0]') >> build.env
-    # - echo WORKER_1=$(terraform output -json | jq -r '.worker_ips.value[0]') >> build.env
-    # - echo WORKER_2=$(terraform output -json | jq -r '.worker_ips.value[1]') >> build.env || true
-    # - echo WORKER_3=$(terraform output -json | jq -r '.worker_ips.value[2]') >> build.env || true
-    # - cat build.env
   # Use artifacts.reports.dotenv to pass variables in build.env from this job to the next
   artifacts:
     reports:
@@ -79,19 +75,8 @@ deploy-k3s:
     - touch /home/${USER}/.kube/config
     - mkdir -p /home/${USER}/.ssh
     - cp ${id_rsa} /home/${USER}/.ssh
-    - ls -lah
     # We need to make sure the command below passes entire lists so you have to surrond them with quotes " "
     - ./installk3s.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}" "${USER_K3S}" "${K3S_VERSION}" "${K3S_CONTEXT}"
-    # - curl -sLS https://get.k3sup.dev | sh
-    # - sudo install k3sup /usr/local/bin/
-    # - k3sup install --ip ${MASTER_1} --local-path ~/.kube/config --k3s-version ${K3S_VERSION} --context ${K3S_CONTEXT} --user ${USER_K3S}
-    # - sleep 20
-    # - k3sup join --ip ${WORKER_1} --server-ip ${MASTER_1} --user ${USER_K3S} --k3s-version ${K3S_VERSION}
-    # - k3sup join --ip ${WORKER_2} --server-ip ${MASTER_1} --user ${USER_K3S} --k3s-version ${K3S_VERSION} || true
-    # - k3sup join --ip ${WORKER_3} --server-ip ${MASTER_1} --user ${USER_K3S} --k3s-version ${K3S_VERSION} || true
-    # - sleep 20
-    # - kubectl get nodes -owide
-    # - kubectl taint nodes ${MASTER_1_NAME} key=value:NoSchedule || true
     # Store the kube config file in Vault
     - cat /home/${USER}/.kube/config | base64 | vault kv put external/k3sdemo k3s_config_base64=-
     # Use the command below to get it ready to be sent out of the pipeline as artifact...this is HIGHLY INSECURE
