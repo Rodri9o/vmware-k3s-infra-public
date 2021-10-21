@@ -64,9 +64,9 @@ terraform-build-k3s:
     # - echo WORKER_3=$(terraform output -json | jq -r '.worker_ips.value[2]') >> build.env || true
     # - cat build.env
   # Use artifacts.reports.dotenv to pass variables in build.env from this job to the next
-  # artifacts:
-  #   reports:
-  #     dotenv: build.env
+  artifacts:
+    reports:
+      dotenv: build.env
 
   tags: [inK8s]
 
@@ -98,7 +98,7 @@ deploy-k3s:
     # - cp /home/${USER}/.kube/config .
   needs:
     - job: terraform-build-k3s
-      # artifacts: true
+      artifacts: true
   # If you don't have vault set up, you can use the artifacts stanza below to get the kube config file...this is HIGHLY INSECURE
   # artifacts:
   #     public: false
