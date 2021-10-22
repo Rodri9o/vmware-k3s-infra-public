@@ -2,10 +2,12 @@ variables:
   USER_K3S: ubuntu
   K3S_VERSION: v1.21.4+k3s1
   K3S_CONTEXT: k3s-vmware-test
-  MASTER_NAMES: "master-test-1 master-test-2 master-test-3"
-  WORKER_NAMES: "worker-test-1 worker-test-2 worker-test-3"
-  # WORKER_NAMES: "worker-test-1"
-  MASTER_IPS: "192.168.1.93 192.168.1.94 192.168.1.95"
+  # MASTER_NAMES: "master-test-1 master-test-2 master-test-3"
+  MASTER_NAMES: "master-test-1"
+  # WORKER_NAMES: "worker-test-1 worker-test-2 worker-test-3"
+  WORKER_NAMES: "worker-test-1"
+  # MASTER_IPS: "192.168.1.93 192.168.1.94 192.168.1.95"
+  MASTER_IPS: "192.168.1.93"
   WORKER_IPS: "192.168.1.96 192.168.1.97 192.168.1.98"
   # WORKER_IPS: "192.168.1.94"
   VAULT_ADDR: http://vault-raft-active.vault-raft.svc.cluster.local:8200
