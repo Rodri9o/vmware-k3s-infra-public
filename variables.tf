@@ -46,16 +46,6 @@ variable "vsphere-template-folder" {
 # VMware vSphere virtual machine #
 #================================#
 
-variable "master_vm_count" {
-  description = "Number of VMs"
-  default     = 1
-}
-
-variable "worker_vm_count" {
-  description = "Number of VMs"
-  default     = 1
-}
-
 variable "vm-name-prefix" {
   type        = string
   description = "Name of VM prefix"

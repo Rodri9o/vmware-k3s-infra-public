@@ -31,7 +31,6 @@ provider "vsphere" {
 
 # Master VM
 module "vsphere_vm_master" {
-  # count                  = var.master_vm_count
   for_each         = var.master_nodes
   source           = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
   version          = "0.2.3"
@@ -40,7 +39,6 @@ module "vsphere_vm_master" {
   vsphere_vcenter  = var.vsphere_vcenter
   ssh_username     = var.ssh_username
   ssh_password     = var.ssh_password
-  # name                   = "${var.master_name}-${count.index + 1}"
   name                   = each.key
   cpu                    = var.master_cpu
   cores-per-socket       = var.master_cores-per-socket
@@ -55,7 +53,6 @@ module "vsphere_vm_master" {
   vm-network             = var.vm-network
   vm-domain              = var.vm-domain
   dns_server_list        = var.dns_server_list
-  # ipv4_address           = var.master_ipv4_address[count.index]
   ipv4_address = each.value
   ipv4_gateway = var.ipv4_gateway
   ipv4_netmask = var.ipv4_netmask
@@ -63,7 +60,6 @@ module "vsphere_vm_master" {
 
 # Worker VM
 module "vsphere_vm_worker" {
-  # count                  = var.worker_vm_count
   for_each         = var.worker_nodes
   source           = "app.terraform.io/HashiCorp-Sam/vsphere_vm-public/vsphere"
   version          = "0.2.3"
@@ -72,7 +68,6 @@ module "vsphere_vm_worker" {
   vsphere_vcenter  = var.vsphere_vcenter
   ssh_username     = var.ssh_username
   ssh_password     = var.ssh_password
-  # name                   = "${var.worker_name}-${count.index + 1}"
   name                   = each.key
   cpu                    = var.worker_cpu
   cores-per-socket       = var.worker_cores-per-socket
@@ -87,7 +82,6 @@ module "vsphere_vm_worker" {
   vm-network             = var.vm-network
   vm-domain              = var.vm-domain
   dns_server_list        = var.dns_server_list
-  # ipv4_address           = var.worker_ipv4_address[count.index]
   ipv4_address = each.value
   ipv4_gateway = var.ipv4_gateway
   ipv4_netmask = var.ipv4_netmask

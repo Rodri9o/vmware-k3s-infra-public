@@ -54,7 +54,7 @@ destroy-k3s:
 #         }
 #       }
 #       EOF
-#     # We need to make sure the command below passes entire lists so you have to surrond them with quotes " "
+#     # We need to make sure the command below passes entire lists so you have to surround them with quotes " "
 #     - ./createautovars.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}"
 #     - terraform init -backend-config="token=${TFC_TOKEN}"
 #     - terraform fmt
@@ -77,7 +77,7 @@ destroy-k3s:
 #     - touch /home/${USER}/.kube/config
 #     - mkdir -p /home/${USER}/.ssh
 #     - cp ${id_rsa} /home/${USER}/.ssh
-#     # We need to make sure the command below passes entire lists so you have to surrond them with quotes " "
+#     # We need to make sure the command below passes entire lists so you have to surround them with quotes " "
 #     - ./installk3s.sh "${MASTER_NAMES}" "${WORKER_NAMES}" "${MASTER_IPS}" "${WORKER_IPS}" "${USER_K3S}" "${K3S_VERSION}" "${K3S_CONTEXT}"
 #     # Store the kube config file in Vault
 #     - cat /home/${USER}/.kube/config | base64 | vault kv put external/k3sdemo k3s_config_base64=-

@@ -1,10 +1,8 @@
-master_vm_count = 1
 master_cpu              = 4
 master_cores-per-socket = 1
 master_ram              = 4096
 master_disksize         = 100 # in GB
 
-worker_vm_count = 1
 worker_cpu              = 4
 worker_cores-per-socket = 1
 worker_ram              = 4096
