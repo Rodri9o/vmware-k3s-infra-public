@@ -13,5 +13,6 @@ export VAULT_TOKEN=<your_token>
 export VAULT_ADDR=http://vault.home
 vault kv get -field k3s_config_base64 external/k3sdemo | base64 --decode > mytestconfig
 export KUBECONFIG=mytestconfig
-kg nodes -owide
+kubectl get nodes -owide
+kubectl get all --namespace kube-system
 ```
